@@ -13,6 +13,9 @@ class BotWrapper:
     def set_instances(self, bot_: Bot):
         self.__instance = bot_
 
+    def get_instance(self) -> Bot:
+        return self.__instance
+
     def _send_wrapper(self, wrapped):
         @wraps(wrapped)
         def wrapper(*args, **kwargs):

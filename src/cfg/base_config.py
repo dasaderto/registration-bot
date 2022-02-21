@@ -1,6 +1,7 @@
 import logging
 from enum import Enum
 from pathlib import Path
+from typing import List
 
 
 class Environment(Enum):
@@ -23,3 +24,12 @@ class BaseConfig:
     LOCALIZATIONS_PATH = RESOURCES_PATH / "localization"
     ENVIRONMENT: Environment
     DEFAULT_LANGUAGE = "ru"
+
+    # DB
+    DB_USERNAME: str
+    DB_PASSWORD: str
+    DB_HOST: str
+    DB_PORT: int = 5432
+    DB_NAME: str
+
+    REGISTERED_MODELS: List[str]
