@@ -1,0 +1,4 @@
+src/cfg/current_config.py
+venv
+.idea
+runtime/logs

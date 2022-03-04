@@ -1,0 +1,21 @@
+commands:
+  start: "Приветик от бота записи на прием"
+
+handlers:
+  user_phone_number:
+    main_message: "Нам нужен ваш номер телефона для дальнейшего взаимодействия"
+    success: "Номер получен. Спасибо"
+
+    buttons:
+      send_phone: "Отправить номер телефона ☎️"
+
+  user_role_setup:
+    main_message: "Вы `Мастер` или `Клиент`?"
+    success_message: "Вы выбрали роль: {role}"
+
+    buttons:
+      master_role: "Мастер"
+      client_role: "Клиент"
+
+  errors:
+    user_role_undefined: "Пожалуйста, выберите одну из ролей `Мастер` или `Клиент`"
