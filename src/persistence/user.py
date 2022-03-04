@@ -8,6 +8,7 @@ from src.persistence.base import BaseDBModel, ChoicesEnum
 class UserRoles(ChoicesEnum):
     MASTER = L("handlers.user_role_setup.buttons.master_role")
     CLIENT = L("handlers.user_role_setup.buttons.client_role")
+    ALL = L("handlers.user_role_setup.buttons.all_role")
 
 
 class UserDB(BaseDBModel):

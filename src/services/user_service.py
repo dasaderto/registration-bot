@@ -19,6 +19,7 @@ class UserKeyboardService:
             KeyboardButton(L("handlers.user_role_setup.buttons.master_role")),
             KeyboardButton(L("handlers.user_role_setup.buttons.client_role")),
         ])
+        keyboard.add(KeyboardButton(L("handlers.user_role_setup.buttons.all_role")))
         return keyboard
 
 

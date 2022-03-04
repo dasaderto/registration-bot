@@ -16,6 +16,7 @@ handlers:
     buttons:
       master_role: "Мастер"
       client_role: "Клиент"
+      all_role: "Обе"
 
   errors:
     user_role_undefined: "Пожалуйста, выберите одну из ролей `Мастер` или `Клиент`"
