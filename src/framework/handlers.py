@@ -1,5 +1,6 @@
 import functools
-from typing import Callable, Optional, Coroutine, Any
+from abc import ABC, abstractmethod
+from typing import Callable, Optional, Coroutine, Any, Type
 
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
@@ -27,9 +28,23 @@ class HandlerContext:
         return self._user
 
 
-def prepare_ctx(wrapped_handler: Callable[[HandlerContext], Coroutine]):
-    async def wrapper(message: Message, state: FSMContext):
-        async with async_session() as session:
-            ctx = HandlerContext(message=message, state=state, db_session=session)
-            await wrapped_handler(ctx)
-    return wrapper
+class BaseStateMachine(ABC):
+    def __init__(self, ctx: HandlerContext):
+        self.ctx = ctx
+
+    @abstractmethod
+    def start(self):
+        raise NotImplementedError
+
+
+def prepare_ctx(state_machine: Type[BaseStateMachine] = None):
+    def wrap_handler(wrapped_handler: Callable[[HandlerContext], Coroutine]):
+        async def wrapper(message: Message, state: FSMContext):
+            async with async_session() as session:
+                ctx = HandlerContext(message=message, state=state, db_session=session)
+                await wrapped_handler(ctx)
+                if state_machine:
+                    await state_machine(ctx=ctx).start()
+
+        return wrapper
+    return wrap_handler
