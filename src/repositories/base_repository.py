@@ -6,6 +6,8 @@ from sqlalchemy.engine import ChunkedIteratorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import Select, Delete, Insert, Update
 
+from src.persistence.base import BaseDBModel
+
 
 class BaseRepository(ABC):
     db: AsyncSession
@@ -18,3 +20,7 @@ class BaseRepository(ABC):
 
     def select(self, *args) -> Select:
         return select(*args)
+
+    async def save(self, model: BaseDBModel):
+        self.db.add(model)
+        await self.db.commit()

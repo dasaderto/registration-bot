@@ -1,7 +1,13 @@
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import JSON
 
-from src.persistence.base import BaseDBModel
+from src.framework.localization import L
+from src.persistence.base import BaseDBModel, ChoicesEnum
+
+
+class UserRoles(ChoicesEnum):
+    MASTER = L("handlers.user_role_setup.buttons.master_role")
+    CLIENT = L("handlers.user_role_setup.buttons.client_role")
 
 
 class UserDB(BaseDBModel):
@@ -13,3 +19,4 @@ class UserDB(BaseDBModel):
     tg_raw_user = Column(JSON)
 
     phone = Column(String(255), nullable=True)
+    role = Column(String(50), nullable=True)

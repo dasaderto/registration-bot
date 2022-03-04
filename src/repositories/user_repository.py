@@ -15,11 +15,10 @@ class UserRepository(BaseRepository):
         if not user:
             user = UserDB()
             user.id = tg_user.id
-            user.tg_first_name = tg_user.first_name
-            user.tg_last_name = tg_user.last_name
-            user.tg_username = tg_user.username
-            user.tg_raw_user = tg_user.to_python()
-            logger.info(f"Creating new {user}")
-            self.db.add(user)
-            await self.db.commit()
+        user.tg_first_name = tg_user.first_name
+        user.tg_last_name = tg_user.last_name
+        user.tg_username = tg_user.username
+        user.tg_raw_user = tg_user.to_python()
+        self.db.add(user)
+        await self.db.commit()
         return user

@@ -3,13 +3,13 @@ from datetime import time
 from logging.handlers import TimedRotatingFileHandler
 
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from src.cfg.current_config import Config
 from src.framework.bot import bot
 from src.framework.localization import check_localization
-from src.handlers.phone_number_handler import user_phone_number_handler, PhoneNumberState
-from src.handlers.start_handler import start_command
+from src.handlers.user_handlers import user_phone_number_handler, user_role_setup_handler, start_command
+from src.states.user_states import UserState
 
 
 def initialize_logging(logging_level: int = Config.DEFAULT_LOGGING_LEVEL):
@@ -41,8 +41,8 @@ def initialize_logging(logging_level: int = Config.DEFAULT_LOGGING_LEVEL):
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(start_command, commands="start", state="*")
     dp.register_message_handler(user_phone_number_handler,
-                                state=PhoneNumberState.phone_number,
-                                content_types=types.ContentTypes.CONTACT)
+                                state=UserState.phone_number, content_types=types.ContentTypes.CONTACT)
+    dp.register_message_handler(user_role_setup_handler, state=UserState.user_role)
 
 
 def start_app():
@@ -50,7 +50,7 @@ def start_app():
     check_localization()
 
     bot.set_instances(Bot(token=Config.BOT_TOKEN))
-    dp = Dispatcher(bot.get_instance(), storage=RedisStorage2())
+    dp = Dispatcher(bot.get_instance(), storage=MemoryStorage())
     register_handlers(dp=dp)
     logging.getLogger(__name__).debug("Start polling ...")
     executor.start_polling(dp, skip_updates=True)
